@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using loginAPI.Data;
 using loginAPI.Model;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace loginAPI.Controllers
 {
@@ -53,6 +54,32 @@ namespace loginAPI.Controllers
 
             return Ok(new { token = tokenHandler.WriteToken(token) });
         }
+
+        [HttpPost("register")]
+        public IActionResult Register([FromBody] RegisterRequest request)
+        {
+            // untuk cek apakah username sudah ada di database
+            if (_context.Users.Any(u => u.Username == request.Username))
+                return BadRequest(new { message = "Username already exists" });
+
+
+            //untuk hash password sebelum di simpan kedalam database
+            var hasher = new PasswordHasher<string>();
+            var hashedPassword = hasher.HashPassword("", request.Password);
+            
+            var user = new User
+            {
+                Username = request.Username,
+                Password = request.Password,
+                Role = request.Role ?? "User",
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _context.Users.Add(user);
+            _context.SaveChanges();
+
+            return Ok(new { message = "User registered successfully" });
+        }
     }
 
     public class LoginRequest
@@ -60,4 +87,5 @@ namespace loginAPI.Controllers
         public string Username { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
     }
+
 }

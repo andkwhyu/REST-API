@@ -144,3 +144,4 @@
 /home/yuukii/Documents/project/loginAPI/loginAPI/bin/Debug/net8.0/Npgsql.dll
 /home/yuukii/Documents/project/loginAPI/loginAPI/bin/Debug/net8.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll
 /home/yuukii/Documents/project/loginAPI/loginAPI/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/home/yuukii/Documents/project/loginAPI/loginAPI/obj/Debug/net8.0/loginAPI.sourcelink.json
