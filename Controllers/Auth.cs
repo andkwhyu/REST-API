@@ -26,17 +26,21 @@ namespace loginAPI.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest request)
         {
+            // untuk mencari user yang ada didalam database
             var user = _context.Users.SingleOrDefault(u => u.Username == request.Username);
             if (user == null) 
             return Unauthorized();
 
+            // untuk memverifikasi password apakah sudah sesuai dengan yang ada di database
             var hasher = new PasswordHasher<string>();
             var result = hasher.VerifyHashedPassword("", user.Password, request.Password);
-
             if (result == PasswordVerificationResult.Failed) 
             return Unauthorized();
 
+            //JWT KEY
             var key = Encoding.UTF8.GetBytes(_config["Jwt:Key"] ?? "fallback-secret");
+            
+            // untuk menentukan masa berlaku token dan kredensial token
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
@@ -49,9 +53,11 @@ namespace loginAPI.Controllers
                     new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
+            // untuk generate token
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
+            // return token ke client jika berhasil login
             return Ok(new { token = tokenHandler.WriteToken(token) });
         }
 
@@ -66,7 +72,7 @@ namespace loginAPI.Controllers
             //untuk hash password sebelum di simpan kedalam database
             var hasher = new PasswordHasher<string>();
             var hashedPassword = hasher.HashPassword("", request.Password);
-            
+
             var user = new User
             {
                 Username = request.Username,
