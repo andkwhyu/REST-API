@@ -29,13 +29,13 @@ namespace loginAPI.Controllers
             // untuk mencari user yang ada didalam database
             var user = _context.Users.SingleOrDefault(u => u.Username == request.Username);
             if (user == null) 
-            return Unauthorized();
+            return BadRequest(new { message = "Username Doesn't Exists, Please Register" });
 
             // untuk memverifikasi password apakah sudah sesuai dengan yang ada di database
             var hasher = new PasswordHasher<string>();
             var result = hasher.VerifyHashedPassword("", user.Password, request.Password);
             if (result == PasswordVerificationResult.Failed) 
-            return Unauthorized();
+            return BadRequest(new { message = "Password Incorrect, Try again" });
 
             //JWT KEY
             var key = Encoding.UTF8.GetBytes(_config["Jwt:Key"] ?? "fallback-secret");
@@ -58,7 +58,7 @@ namespace loginAPI.Controllers
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             // return token ke client jika berhasil login
-            return Ok(new { token = tokenHandler.WriteToken(token) });
+            return Ok(new { token = tokenHandler.WriteToken(token), message = "Login successfully, Welcome"} );
         }
 
         [HttpPost("register")]
@@ -86,6 +86,47 @@ namespace loginAPI.Controllers
 
             return Ok(new { message = "User registered successfully" });
         }
+
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            //untuk mengecek apakah id ada di dalam database
+            var ID = _context.Users.Find(id);
+            if (ID == null)
+                return NotFound(new{message = "User Not Found"});
+
+            _context.Users.Remove(ID);
+            _context.SaveChanges();
+
+            return Ok(new{message = "User Deleted Successfully"});
+        }
+
+
+        [HttpPut("{id}/password")]
+        public IActionResult UpdatePassword(int id, [FromBody] UpdateRequest request)
+        {
+            //untuk mengecek apakah id ada di dalam database
+            var user = _context.Users.Find(id);
+            if (user == null)
+                return NotFound(new { message = "User not found" });
+
+            //untuk validasi kalau password tidak boleh kosong
+            if (string.IsNullOrEmpty(request.Password))
+                return BadRequest(new { message = "Password cannot be empty" });
+
+            //untuk hash password sebelum di simpan kedalam database
+            var hasher = new PasswordHasher<string>();
+            var hashedPassword = hasher.HashPassword("", request.Password);
+
+            user.Password = hashedPassword;
+
+            _context.Users.Update(user);
+            _context.SaveChanges();
+
+            return Ok(new { message = "Password updated successfully" });
+        }
+
     }
 
     public class LoginRequest

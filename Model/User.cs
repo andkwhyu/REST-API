@@ -16,4 +16,16 @@ namespace loginAPI.Model
         public string? Role { get; set; }
     }
 
+    public class UpdateRequest
+    {
+        public string Password {get; set; } = string.Empty;
+    }
+
+    public class DeleteRequest
+    {
+        public int Id {get; set; }
+    }
+
+
+
 }
