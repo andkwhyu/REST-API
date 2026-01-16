@@ -76,7 +76,7 @@ namespace loginAPI.Controllers
             var user = new User
             {
                 Username = request.Username,
-                Password = request.Password,
+                Password = hashedPassword,
                 Role = request.Role ?? "User",
                 CreatedAt = DateTime.UtcNow
             };
