@@ -7,6 +7,7 @@ using System.Text;
 using loginAPI.Data;
 using loginAPI.Model;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Authorization;
 
 namespace loginAPI.Controllers
 {
@@ -45,6 +46,7 @@ namespace loginAPI.Controllers
             {
                 Subject = new ClaimsIdentity(new[]
                 {
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim(ClaimTypes.Name, user.Username),
                     new Claim(ClaimTypes.Role, user.Role ?? "User")
                 }),
@@ -102,32 +104,81 @@ namespace loginAPI.Controllers
             return Ok(new{message = "User Deleted Successfully"});
         }
 
-
-        [HttpPut("{id}/password")]
-        public IActionResult UpdatePassword(int id, [FromBody] UpdateRequest request)
+        [Authorize]
+        [HttpPut("password")]
+        public IActionResult UpdatePassword([FromBody] UpdateRequest request)
         {
-            //untuk mengecek apakah id ada di dalam database
-            var user = _context.Users.Find(id);
-            if (user == null)
-                return NotFound(new { message = "User not found" });
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            //untuk validasi kalau password tidak boleh kosong
+            if (userIdClaim == null)
+                return Unauthorized();
+
+            var userId = int.Parse(userIdClaim);
+            var user = _context.Users.Find(userId);
+
+            if (user == null)
+                return Unauthorized();
+
             if (string.IsNullOrEmpty(request.Password))
                 return BadRequest(new { message = "Password cannot be empty" });
 
-            //untuk hash password sebelum di simpan kedalam database
             var hasher = new PasswordHasher<string>();
-            var hashedPassword = hasher.HashPassword("", request.Password);
+            user.Password = hasher.HashPassword("", request.Password);
 
-            user.Password = hashedPassword;
-
-            _context.Users.Update(user);
             _context.SaveChanges();
 
             return Ok(new { message = "Password updated successfully" });
         }
 
+      
+        [HttpPost("forgot-password")]
+        public IActionResult ForgotPassword([FromBody] ForgotPasswordRequest request)
+        {
+            var user = _context.Users.SingleOrDefault(u => u.Username == request.Username);
+            if (user == null)
+                return BadRequest(new { message = "User Doesn't Exists, Please Register!!!" });
+
+            user.ResetToken = Guid.NewGuid().ToString();
+            user.ResetTokenExpired = DateTime.UtcNow.AddMinutes(2);
+
+            _context.SaveChanges();
+
+            return Ok(new
+            {
+                message = "Token Reset Created", 
+                resetToken = user.ResetToken
+            });
+        }
+
+        [HttpPut("reset-password")]
+        public IActionResult ResetPassword([FromBody] ResetPasswordRequest request)
+        {
+            var user = _context.Users.SingleOrDefault(u =>
+                u.ResetToken == request.Token &&
+                u.ResetTokenExpired > DateTime.UtcNow);
+
+            if (user == null)
+                return BadRequest(new { message = "Token invalid or Expired" });
+
+            if (string.IsNullOrWhiteSpace(request.NewPassword))
+                return BadRequest(new { message = "Password cannot be empty!" });
+
+            var hasher = new PasswordHasher<string>();
+            user.Password = hasher.HashPassword("", request.NewPassword);
+
+            // invalidate token
+            user.ResetToken = null;
+            user.ResetTokenExpired = null;
+
+            _context.SaveChanges();
+
+            return Ok(new
+            {
+                message = "Reset Password Successfully"
+            });
+        }
     }
+
 
     public class LoginRequest
     {

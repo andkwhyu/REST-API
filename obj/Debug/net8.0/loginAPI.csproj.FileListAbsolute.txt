@@ -1,3 +1,11 @@
+/home/yuukii/Documents/project/loginAPI/loginAPI/obj/Debug/net8.0/loginAPI.csproj.AssemblyReference.cache
+/home/yuukii/Documents/project/loginAPI/loginAPI/obj/Debug/net8.0/loginAPI.GeneratedMSBuildEditorConfig.editorconfig
+/home/yuukii/Documents/project/loginAPI/loginAPI/obj/Debug/net8.0/loginAPI.AssemblyInfoInputs.cache
+/home/yuukii/Documents/project/loginAPI/loginAPI/obj/Debug/net8.0/loginAPI.AssemblyInfo.cs
+/home/yuukii/Documents/project/loginAPI/loginAPI/obj/Debug/net8.0/loginAPI.csproj.CoreCompileInputs.cache
+/home/yuukii/Documents/project/loginAPI/loginAPI/obj/Debug/net8.0/loginAPI.MvcApplicationPartsAssemblyInfo.cs
+/home/yuukii/Documents/project/loginAPI/loginAPI/obj/Debug/net8.0/loginAPI.MvcApplicationPartsAssemblyInfo.cache
+/home/yuukii/Documents/project/loginAPI/loginAPI/obj/Debug/net8.0/loginAPI.sourcelink.json
 /home/yuukii/Documents/project/loginAPI/loginAPI/bin/Debug/net8.0/appsettings.Development.json
 /home/yuukii/Documents/project/loginAPI/loginAPI/bin/Debug/net8.0/appsettings.json
 /home/yuukii/Documents/project/loginAPI/loginAPI/bin/Debug/net8.0/loginAPI
@@ -9,6 +17,7 @@
 /home/yuukii/Documents/project/loginAPI/loginAPI/bin/Debug/net8.0/Azure.Identity.dll
 /home/yuukii/Documents/project/loginAPI/loginAPI/bin/Debug/net8.0/Humanizer.dll
 /home/yuukii/Documents/project/loginAPI/loginAPI/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/home/yuukii/Documents/project/loginAPI/loginAPI/bin/Debug/net8.0/Microsoft.AspNetCore.OpenApi.dll
 /home/yuukii/Documents/project/loginAPI/loginAPI/bin/Debug/net8.0/Microsoft.Bcl.AsyncInterfaces.dll
 /home/yuukii/Documents/project/loginAPI/loginAPI/bin/Debug/net8.0/Microsoft.CodeAnalysis.dll
 /home/yuukii/Documents/project/loginAPI/loginAPI/bin/Debug/net8.0/Microsoft.CodeAnalysis.CSharp.dll
@@ -122,14 +131,6 @@
 /home/yuukii/Documents/project/loginAPI/loginAPI/bin/Debug/net8.0/runtimes/win/lib/net6.0/System.Runtime.Caching.dll
 /home/yuukii/Documents/project/loginAPI/loginAPI/bin/Debug/net8.0/runtimes/win/lib/net6.0/System.Security.Cryptography.ProtectedData.dll
 /home/yuukii/Documents/project/loginAPI/loginAPI/bin/Debug/net8.0/runtimes/win/lib/net6.0/System.Windows.Extensions.dll
-/home/yuukii/Documents/project/loginAPI/loginAPI/obj/Debug/net8.0/loginAPI.csproj.AssemblyReference.cache
-/home/yuukii/Documents/project/loginAPI/loginAPI/obj/Debug/net8.0/loginAPI.GeneratedMSBuildEditorConfig.editorconfig
-/home/yuukii/Documents/project/loginAPI/loginAPI/obj/Debug/net8.0/loginAPI.AssemblyInfoInputs.cache
-/home/yuukii/Documents/project/loginAPI/loginAPI/obj/Debug/net8.0/loginAPI.AssemblyInfo.cs
-/home/yuukii/Documents/project/loginAPI/loginAPI/obj/Debug/net8.0/loginAPI.csproj.CoreCompileInputs.cache
-/home/yuukii/Documents/project/loginAPI/loginAPI/obj/Debug/net8.0/loginAPI.MvcApplicationPartsAssemblyInfo.cs
-/home/yuukii/Documents/project/loginAPI/loginAPI/obj/Debug/net8.0/loginAPI.MvcApplicationPartsAssemblyInfo.cache
-/home/yuukii/Documents/project/loginAPI/loginAPI/obj/Debug/net8.0/loginAPI.sourcelink.json
 /home/yuukii/Documents/project/loginAPI/loginAPI/obj/Debug/net8.0/staticwebassets.build.json
 /home/yuukii/Documents/project/loginAPI/loginAPI/obj/Debug/net8.0/staticwebassets.development.json
 /home/yuukii/Documents/project/loginAPI/loginAPI/obj/Debug/net8.0/staticwebassets/msbuild.loginAPI.Microsoft.AspNetCore.StaticWebAssets.props
@@ -144,4 +145,3 @@
 /home/yuukii/Documents/project/loginAPI/loginAPI/obj/Debug/net8.0/loginAPI.pdb
 /home/yuukii/Documents/project/loginAPI/loginAPI/obj/Debug/net8.0/loginAPI.genruntimeconfig.cache
 /home/yuukii/Documents/project/loginAPI/loginAPI/obj/Debug/net8.0/ref/loginAPI.dll
-/home/yuukii/Documents/project/loginAPI/loginAPI/bin/Debug/net8.0/Microsoft.AspNetCore.OpenApi.dll
