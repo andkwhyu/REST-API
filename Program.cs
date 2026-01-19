@@ -103,7 +103,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 // Endpoint contoh
-app.MapGet("/secure", () => "Ini endpoint aman, cuma bisa diakses kalau ada JWT")
+app.MapGet("/secure", () => "WELCOME TO THE CLUB")
    .RequireAuthorization();
 app.MapControllers();
 app.Run();

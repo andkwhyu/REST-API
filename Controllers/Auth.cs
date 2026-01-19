@@ -50,7 +50,7 @@ namespace loginAPI.Controllers
                     new Claim(ClaimTypes.Name, user.Username),
                     new Claim(ClaimTypes.Role, user.Role ?? "User")
                 }),
-                Expires = DateTime.UtcNow.AddHours(1),
+                Expires = DateTime.UtcNow.AddSeconds(10),
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
@@ -90,7 +90,7 @@ namespace loginAPI.Controllers
         }
 
         [Authorize]
-        [HttpDelete("username")]
+        [HttpDelete("delete/{username}")]
         public IActionResult Delete([FromBody] DeleteRequest request)
         {
             var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -98,6 +98,7 @@ namespace loginAPI.Controllers
             if (userIdClaim == null)
                 return Unauthorized();
 
+            // untuk memastikan bahwa username yang di input tidak boleh kosong
             if (string.IsNullOrWhiteSpace(request.Username.ToString()))
                 return BadRequest(new { message = "Username cannot be empty!" });
 
@@ -107,7 +108,7 @@ namespace loginAPI.Controllers
             if (user == null)
                 return Unauthorized();
 
-            // pastikan username yg dikirim adalah milik user login
+            // untuk memastikan username yang ingin dihapus adalah username yang login
            if (!string.Equals(user.Username, request.Username, StringComparison.OrdinalIgnoreCase))
             {
                 return BadRequest(new { message = "Username does not match logged-in user" });
@@ -124,7 +125,7 @@ namespace loginAPI.Controllers
 
 
         [Authorize]
-        [HttpPut("password")]
+        [HttpPut("change-password")]
         public IActionResult UpdatePassword([FromBody] UpdateRequest request)
         {
             var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
