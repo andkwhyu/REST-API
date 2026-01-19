@@ -26,7 +26,7 @@ namespace loginAPI.Model
 
     public class DeleteRequest
     {
-        public int Id {get; set; }
+        public string Username {get; set; }
     }
 
     public class ForgotPasswordRequest

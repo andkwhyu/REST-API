@@ -89,20 +89,39 @@ namespace loginAPI.Controllers
             return Ok(new { message = "User registered successfully" });
         }
 
-
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        [Authorize]
+        [HttpDelete("username")]
+        public IActionResult Delete([FromBody] DeleteRequest request)
         {
-            //untuk mengecek apakah id ada di dalam database
-            var ID = _context.Users.Find(id);
-            if (ID == null)
-                return NotFound(new{message = "User Not Found"});
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            _context.Users.Remove(ID);
+            if (userIdClaim == null)
+                return Unauthorized();
+
+            if (string.IsNullOrWhiteSpace(request.Username.ToString()))
+                return BadRequest(new { message = "Username cannot be empty!" });
+
+            var userId = int.Parse(userIdClaim);
+            var user = _context.Users.FirstOrDefault(u => u.Id == userId);
+
+            if (user == null)
+                return Unauthorized();
+
+            // pastikan username yg dikirim adalah milik user login
+           if (!string.Equals(user.Username, request.Username, StringComparison.OrdinalIgnoreCase))
+            {
+                return BadRequest(new { message = "Username does not match logged-in user" });
+            }
+
+            _context.Users.Remove(user);
             _context.SaveChanges();
 
-            return Ok(new{message = "User Deleted Successfully"});
+            return Ok(new
+            {
+                message = "User deleted successfully. Please logout."
+            });
         }
+
 
         [Authorize]
         [HttpPut("password")]
